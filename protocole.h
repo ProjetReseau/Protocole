@@ -11,7 +11,11 @@ typedef enum type {
   texte,
   fileProposition,
   fileAcceptation,
-  fileTransfert
+  fileTransfert,
+  groupJoin,
+  annuaireNew,
+  annuaireAsk,
+  annuaireInfo
 
 }type;
 
