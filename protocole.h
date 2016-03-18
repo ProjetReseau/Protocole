@@ -27,3 +27,6 @@ typedef struct trame {
   char message[TAILLE_MAX_MESSAGE];
 
 }trame;
+
+trame str_to_tr(char * mess);
+char * tr_to_str(trame * tr);
