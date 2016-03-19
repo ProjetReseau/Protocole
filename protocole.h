@@ -1,3 +1,7 @@
+
+#ifndef __PROTOCOLE__
+#define __PROTOCOLE__
+
 #define MAX_CONNECTE 20
 #define TAILLE_PSEUDO 20
 #define TAILLE_MAX_MESSAGE 512
@@ -30,3 +34,14 @@ typedef struct trame {
 
 trame str_to_tr(char * mess);
 char * tr_to_str(trame * tr);
+
+
+
+
+
+
+
+
+
+
+#endif
