@@ -1,7 +1,7 @@
 # Protocole
 
 18/03 : Améliration à apporter :
-Récupération du nom de fichier puis utilisation d'un script ? pour récupérer des données (taille, empalcement, format,..) de ce fichier est les placer dans le message
+Récupération du nom de fichier puis utilisation d'un script ? pour récupérer des données (taille, empalcement, format,..) de ce fichier et les placer dans le message
 
 - [ ] Fonctions `str_to_tr` et `tr_to_str` à tester concrêtement.
 - [ ] Code mettant en forme le protocole dédié.
@@ -16,8 +16,8 @@ Récupération du nom de fichier puis utilisation d'un script ? pour récupérer
 * __FILE A *(à déterminer)*__ : Accepter l'envoi du fichier
 * __FILE T *données*__ : Paquet contenant des données du fichier en cours de transfert
   * *à implémenter éventuellement :* __FILE E *(à déterminer)*__ : Fin de l'envoi du fichier
-* __JOIN *(???)*__ : *???*
-* __NEW *(???)*__ : *???*
-* __ASK *(???)*__ : *???*
-* __INFO *(???)*__ : *???*
+* __JOIN *nom_groupe*__ : Permet de rejoindre un groupe
+* __NEW__ : Permet de s'enregistrer auprès du serveur d'annuaire
+* __ASK *pseudo*__ : Demande l'extrémité correspondant au pseudo au serveur d'annuaire 
+* __INFO__ : Demande la liste de tout ceux qui se sont enregistrés auprès du serveur d'annuaire
 * ...
