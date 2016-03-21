@@ -17,7 +17,7 @@ Récupération du nom de fichier puis utilisation d'un script ? pour récupérer
 * __FILE T *données*__ : Paquet contenant des données du fichier en cours de transfert
   * *à implémenter éventuellement :* __FILE E *(à déterminer)*__ : Fin de l'envoi du fichier
 * __JOIN *nom_groupe*__ : Permet de rejoindre un groupe
-* __NEW__ : Permet de s'enregistrer auprès du serveur d'annuaire
-* __ASK *pseudo*__ : Demande l'extrémité correspondant au pseudo au serveur d'annuaire 
+* __NEW *pseudo (le notre)*__ : Permet de s'enregistrer auprès du serveur d'annuaire
+* __ASK *pseudo (d'un autre)*__ : Demande l'extrémité correspondant au pseudo au serveur d'annuaire 
 * __INFO__ : Demande la liste de tout ceux qui se sont enregistrés auprès du serveur d'annuaire
 * ...
