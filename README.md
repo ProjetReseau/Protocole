@@ -7,7 +7,9 @@ Récupération du nom de fichier puis utilisation d'un script ? pour récupérer
 - [ ] Code mettant en forme le protocole dédié.
 
 ### Description du protocole :
+
 *A FAIRE : terminer de décrir le protocole.*
+Problème couche session : tcp, flux d'octet -> gérer la taille des messages (tout émis = tout reçu)
 
 * __HELLO *pseudo*__ : Pour s'annoncer et donner son pseudo
 * __MSG *message*__ : Pour envoyer un message
