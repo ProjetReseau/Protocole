@@ -11,6 +11,12 @@ Récupération du nom de fichier puis utilisation d'un script ? pour récupérer
 *A FAIRE : terminer de décrir le protocole.*
 Problème couche session : tcp, flux d'octet -> gérer la taille des messages (tout émis = tout reçu)
 
+Couche session : Taille message, Login (pseudo ?)
+
+Couche présentation : HELLO, QUIT, JOIN, NEW
+
+Couche application : MSG, FILE, ASK, INFO
+
 * __HELLO *pseudo*__ : Pour s'annoncer et donner son pseudo
 * __MSG *message*__ : Pour envoyer un message
 * __QUIT__ : Pour dire qu'on se déconnecte
