@@ -72,7 +72,7 @@ char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
     while(*pointeur != ' '){
       sprintf(taille,"%s%c", taille, *pointeur);
       pointeur++;
-    }
+    }
     pointeur++;
     while (*pointeur != '\0'){
       sprintf(buffer,"%s%c", buffer, *pointeur);
@@ -88,7 +88,6 @@ char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
 
 int str_to_tr(char * mess, trame * tr){
 
-//tr->taille=sizeof(mess);
 char * taille = calloc(sizeof(char), 8);
 
 
@@ -132,8 +131,9 @@ char * taille = calloc(sizeof(char), 8);
     tr->type_message=annuaireInfo;
     strcpy(tr->message, Recup_message("INFO", mess, taille));
   }
-  tr->taille=(int) taille;
-
+  
+  tr->taille=atoi(taille);
+  
   if (sizeof(tr->message)==tr->taille){
 	return EXIT_SUCCESS;	
   }
