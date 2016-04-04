@@ -10,7 +10,7 @@ char * tr_to_str(trame tr){
 
   switch (tr.type_message){
     case hello:
-      sprintf(mess, "HELLO %s", tr.message);
+      sprintf(mess, "HELLO %i %s", tr.taille , tr.message);
       break;
 
     case quit:
@@ -18,31 +18,31 @@ char * tr_to_str(trame tr){
       break;
     
     case texte:
-      sprintf(mess, "MSG %s", tr.message);
+      sprintf(mess, "MSG %i %s",tr.taille, tr.message);
       break;
 
     case fileProposition:
-      sprintf(mess, "File_P %s", tr.message); 
+      sprintf(mess, "File_P %i %s",tr.taille, tr.message); 
       break;
   
     case fileAcceptation:
-      sprintf(mess, "File_A %s", tr.message); 
+      sprintf(mess, "File_A %i %s",tr.taille, tr.message); 
       break;
   
     case fileTransfert:
-      sprintf(mess, "File_T %s", tr.message); 
+      sprintf(mess, "File_T %i %s",tr.taille, tr.message); 
       break;
   
     case groupJoin:
-      sprintf(mess, "JOIN %s", tr.message); 
+      sprintf(mess, "JOIN %i %s",tr.taille, tr.message); 
       break;
   
     case annuaireNew:
-      sprintf(mess, "NEW %s", tr.message); 
+      sprintf(mess, "NEW %i %s",tr.taille, tr.message); 
       break;
   
     case annuaireAsk:
-      sprintf(mess, "ASK %s", tr.message); 
+      sprintf(mess, "ASK %i %s",tr.taille, tr.message); 
       break;
   
     case annuaireInfo:
@@ -53,10 +53,12 @@ char * tr_to_str(trame tr){
       break;
   }
 
+  
+
   return mess;
 }
 
-char * Recup_message(char * mot, char * mess){
+char * Recup_message(char * mot, char * mess, char * taille){
  
 char * pointeur=NULL;
 char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
@@ -66,6 +68,11 @@ char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
     while(*pointeur != ' '){
       pointeur++;
     }
+    pointeur++;
+    while(*pointeur != ' '){
+      sprintf(taille,"%s%c", taille, *pointeur);
+      pointeur++;
+    }
     pointeur++;
     while (*pointeur != '\0'){
       sprintf(buffer,"%s%c", buffer, *pointeur);
@@ -81,49 +88,56 @@ char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
 
 int str_to_tr(char * mess, trame * tr){
 
-tr->taille=sizeof(mess);
+//tr->taille=sizeof(mess);
+char * taille = calloc(sizeof(char), 8);
+
 
   if(strncmp("HELLO", mess, 4)==0){
     tr->type_message=hello;
-    strcpy(tr->message, Recup_message("HELLO", mess));
+    strcpy(tr->message, Recup_message("HELLO", mess, taille));
   }
   else if(strncmp("QUIT", mess, 4)==0){
     tr->type_message=quit;
-    strcpy(tr->message, Recup_message("QUIT", mess));
+    strcpy(tr->message, Recup_message("QUIT", mess, taille));
   }
   else if (strncmp("MSG", mess, 3)==0){
     tr->type_message=texte;
-    strcpy(tr->message, Recup_message("MSG", mess));
+    strcpy(tr->message, Recup_message("MSG", mess, taille));
   }
   else if (strncmp("File_P", mess, 6)==0){
     tr->type_message=fileProposition;
-    strcpy(tr->message, Recup_message("File_P", mess));
+    strcpy(tr->message, Recup_message("File_P", mess, taille));
   }
   else if (strncmp("File_A", mess, 6)==0){
     tr->type_message=fileAcceptation;
-    strcpy(tr->message, Recup_message("File_A", mess));
+    strcpy(tr->message, Recup_message("File_A", mess, taille));
   }
   else if (strncmp("File_T", mess, 6)==0){
     tr->type_message=fileTransfert;
-    strcpy(tr->message, Recup_message("File_T", mess));
+    strcpy(tr->message, Recup_message("File_T", mess, taille));
   }
   else if (strncmp("JOIN", mess, 4)==0){
     tr->type_message=groupJoin;
-    strcpy(tr->message, Recup_message("JOIN", mess));
+    strcpy(tr->message, Recup_message("JOIN", mess, taille));
   }
   else if(strncmp("NEW", mess, 3)==0){
     tr->type_message=annuaireNew;
-    strcpy(tr->message, Recup_message("NEW", mess));
+    strcpy(tr->message, Recup_message("NEW", mess, taille));
   }
   else if(strncmp("ASK", mess, 3)==0){
     tr->type_message=annuaireAsk;
-    strcpy(tr->message,Recup_message("ASK", mess));
+    strcpy(tr->message,Recup_message("ASK", mess, taille));
   }
   else if(strncmp("INFO", mess, 4)==0){
     tr->type_message=annuaireInfo;
-    strcpy(tr->message, Recup_message("INFO", mess));
+    strcpy(tr->message, Recup_message("INFO", mess, taille));
   }
- 
-return EXIT_SUCCESS;
+  tr->taille=(int) taille;
+
+  if (sizeof(tr->message)==tr->taille){
+	return EXIT_SUCCESS;	
+  }
+
+  return EXIT_FAILURE;
 
 }
