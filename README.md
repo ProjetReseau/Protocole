@@ -1,10 +1,10 @@
 # Protocole
 
+- [ ] passer de trame à string: strcpy(data, tr_to_str(trame_write));
+- [ ] passer de string à trame: str_to_tr(data, &trame);
+
 18/03 : Améliration à apporter :
 Récupération du nom de fichier puis utilisation d'un script ? pour récupérer des données (taille, empalcement, format,..) de ce fichier et les placer dans le message
-
-- [ ] Fonctions `str_to_tr` et `tr_to_str` à tester concrêtement.
-- [ ] Code mettant en forme le protocole dédié.
 
 ### Description du protocole :
 
