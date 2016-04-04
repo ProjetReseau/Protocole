@@ -1,4 +1,3 @@
-
 #ifndef __PROTOCOLE__
 #define __PROTOCOLE__
 
@@ -27,7 +26,7 @@ typedef enum type {
 
 typedef struct trame {
 
-  int taille; // Taille du truc en octet
+  int taille; // Taille du message en octet
   type type_message; //Message texte ? Fichier ? Audio ? Video ?  
   //char pseudo_destination[TAILLE_PSEUDO][MAX_CONNECTE];
   char message[TAILLE_MAX_MESSAGE];
@@ -36,6 +35,6 @@ typedef struct trame {
 
 int str_to_tr(char * mess, trame * tr);
 char * tr_to_str(trame tr);
-
+char * Recup_message(char * mot, char * mess, char * taille);
 
 #endif
