@@ -4,13 +4,13 @@
 #include<string.h>
 
 
-char * tr_to_str(trame * tr){
+char * tr_to_str(trame tr){
 
   char * mess=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
 
-  switch (tr->type_message){
+  switch (tr.type_message){
     case hello:
-      sprintf(mess, "HELLO %s", tr->message);
+      sprintf(mess, "HELLO %s", tr.message);
       break;
 
     case quit:
@@ -18,31 +18,31 @@ char * tr_to_str(trame * tr){
       break;
     
     case texte:
-      sprintf(mess, "MSG %s", tr->message);
+      sprintf(mess, "MSG %s", tr.message);
       break;
 
     case fileProposition:
-      sprintf(mess, "File P %s", tr->message); 
+      sprintf(mess, "File_P %s", tr.message); 
       break;
   
     case fileAcceptation:
-      sprintf(mess, "File A %s", tr->message); 
+      sprintf(mess, "File_A %s", tr.message); 
       break;
   
     case fileTransfert:
-      sprintf(mess, "File T %s", tr->message); 
+      sprintf(mess, "File_T %s", tr.message); 
       break;
   
     case groupJoin:
-      sprintf(mess, "JOIN %s", tr->message); 
+      sprintf(mess, "JOIN %s", tr.message); 
       break;
   
     case annuaireNew:
-      sprintf(mess, "NEW %s", tr->message); 
+      sprintf(mess, "NEW %s", tr.message); 
       break;
   
     case annuaireAsk:
-      sprintf(mess, "ASK %s", tr->message); 
+      sprintf(mess, "ASK %s", tr.message); 
       break;
   
     case annuaireInfo:
@@ -66,13 +66,8 @@ char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
     while(*pointeur != ' '){
       pointeur++;
     }
-    if (strcmp(mess, "FILE")>0){
-      pointeur=pointeur+3;
-    }
-    else{
-      pointeur++;
-    }
-    while (*pointeur != '\n'){
+    pointeur++;
+    while (*pointeur != '\0'){
       sprintf(buffer,"%s%c", buffer, *pointeur);
       pointeur++;
     }
@@ -84,51 +79,51 @@ char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
 }
 
 
-trame str_to_tr(char * mess){
+int str_to_tr(char * mess, trame * tr){
 
-trame tr;
-tr.taille=sizeof(mess);
+tr->taille=sizeof(mess);
 
-  if(strcmp(mess,"HELLO")>0){
-    tr.type_message=hello;
-    strcpy(tr.message, Recup_message("HELLO",mess));
+  if(strncmp("HELLO", mess, 4)==0){
+    tr->type_message=hello;
+    strcpy(tr->message, Recup_message("HELLO", mess));
   }
-  else if(strcmp(mess,"QUIT")==0){
-    tr.type_message=quit;
-    strcpy(tr.message, Recup_message("QUIT",mess));
+  else if(strncmp("QUIT", mess, 4)==0){
+    tr->type_message=quit;
+    strcpy(tr->message, Recup_message("QUIT", mess));
   }
-  else if (strcmp(mess, "MSG")>0){
-    tr.type_message=texte;
-    strcpy(tr.message, Recup_message("MSG",mess));
+  else if (strncmp("MSG", mess, 3)==0){
+    tr->type_message=texte;
+    strcpy(tr->message, Recup_message("MSG", mess));
   }
-  else if (strcmp(mess, "FILE P")>0){
-    tr.type_message=fileProposition;
-    strcpy(tr.message, Recup_message("FILE P", mess));
+  else if (strncmp("File_P", mess, 6)==0){
+    tr->type_message=fileProposition;
+    strcpy(tr->message, Recup_message("File_P", mess));
   }
-  else if (strcmp(mess, "FILE A")>0){
-    tr.type_message=fileAcceptation;
-    strcpy(tr.message, Recup_message("FILE A", mess));
+  else if (strncmp("File_A", mess, 6)==0){
+    tr->type_message=fileAcceptation;
+    strcpy(tr->message, Recup_message("File_A", mess));
   }
-  else if (strcmp(mess, "FILE T")>0){
-    tr.type_message=fileTransfert;
-    strcpy(tr.message, Recup_message("FILE T", mess));
+  else if (strncmp("File_T", mess, 6)==0){
+    tr->type_message=fileTransfert;
+    strcpy(tr->message, Recup_message("File_T", mess));
   }
-  else if (strcmp(mess, "JOIN")>0){
-    tr.type_message=groupJoin;
-    strcpy(tr.message, Recup_message("JOIN", mess));
+  else if (strncmp("JOIN", mess, 4)==0){
+    tr->type_message=groupJoin;
+    strcpy(tr->message, Recup_message("JOIN", mess));
   }
-  else if(strcmp(mess,"NEW")>0){
-    tr.type_message=annuaireNew;
-    strcpy(tr.message, Recup_message("NEW", mess));
+  else if(strncmp("NEW", mess, 3)==0){
+    tr->type_message=annuaireNew;
+    strcpy(tr->message, Recup_message("NEW", mess));
   }
-  else if(strcmp(mess,"ASK")>0){
-    tr.type_message=annuaireAsk;
-    strcpy(tr.message,Recup_message("ASK", mess));
+  else if(strncmp("ASK", mess, 3)==0){
+    tr->type_message=annuaireAsk;
+    strcpy(tr->message,Recup_message("ASK", mess));
   }
-  else if(strcmp(mess, "INFO")>0){
-    tr.type_message=annuaireInfo;
-    strcpy(tr.message, Recup_message("INFO", mess));
+  else if(strncmp("INFO", mess, 4)==0){
+    tr->type_message=annuaireInfo;
+    strcpy(tr->message, Recup_message("INFO", mess));
   }
+ 
+return EXIT_SUCCESS;
 
- return tr;
 }
