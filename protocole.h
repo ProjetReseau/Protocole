@@ -8,18 +8,20 @@
 
 
 
+
+
 typedef enum type {
 
-  hello,
-  quit,
-  texte,
-  fileProposition,
-  fileAcceptation,
-  fileTransfert,
-  groupJoin,
-  annuaireNew,
-  annuaireAsk,
-  annuaireInfo
+  hello,               //0
+  quit,                //1
+  texte,               //2
+  fileProposition,     //3
+  fileAcceptation,     //4
+  fileTransfert,       //5
+  groupJoin,           //6
+  annuaireNew,         //7
+  annuaireAsk,         //8
+  annuaireInfo         //9
 
 }type;
 
@@ -32,16 +34,8 @@ typedef struct trame {
 
 }trame;
 
-trame str_to_tr(char * mess);
-char * tr_to_str(trame * tr);
-
-
-
-
-
-
-
-
+int str_to_tr(char * mess, trame * tr);
+char * tr_to_str(trame tr);
 
 
 #endif
