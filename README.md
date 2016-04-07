@@ -1,5 +1,7 @@
 # Protocole
 
+Il faut modifier le protocole trop brute => passer par plusieurs fonctions qui "simule" les couches session, application, présentation (je pense que c'est ce qu'il veut)
+
 - [ ] passer de trame à string: strcpy(data, tr_to_str(trame_write));
 - [ ] passer de string à trame: str_to_tr(data, &trame);
 
@@ -11,11 +13,6 @@ Récupération du nom de fichier puis utilisation d'un script ? pour récupérer
 *A FAIRE : terminer de décrir le protocole.*
 Problème couche session : tcp, flux d'octet -> gérer la taille des messages (tout émis = tout reçu)
 
-Couche session : Taille message, Login (pseudo ?)
-
-Couche présentation : HELLO, QUIT, JOIN, NEW
-
-Couche application : MSG, FILE, ASK, INFO
 
 * __HELLO *pseudo*__ : Pour s'annoncer et donner son pseudo
 * __MSG *message*__ : Pour envoyer un message
