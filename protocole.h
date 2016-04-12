@@ -34,7 +34,14 @@ typedef struct trame {
 }trame;
 
 int str_to_tr(char * mess, trame * tr);
-char * tr_to_str(trame tr);
-char * Recup_message(char * mot, char * mess, char * taille);
+int tr_to_str(char * message, trame tr);
+
+int ApplicationA(char * message, trame tr);
+int PresentationA(char * message, trame tr);
+int SessionA(char * message);
+
+int ApplicationR(char * message, trame * tr);
+int PresentationR(char * message, trame * tr);
+int SessionR(char * message);
 
 #endif
