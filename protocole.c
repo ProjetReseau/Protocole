@@ -4,140 +4,163 @@
 #include<string.h>
 
 
-char * tr_to_str(trame tr){
+int tr_to_str(char * message, trame tr){ 
+ 
+  ApplicationA(message, tr);
+  PresentationA(message, tr);
+  SessionA(message);
 
-  char * mess=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
+  return EXIT_SUCCESS;
+
+}
+
+int ApplicationA(char * message, trame tr){ 
 
   switch (tr.type_message){
     case hello:
-      sprintf(mess, "HELLO %i %s", tr.taille , tr.message);
+      sprintf(message, "HELLO %s", tr.message);
       break;
 
     case quit:
-      sprintf(mess, "QUIT");
+      sprintf(message, "QUIT");
       break;
     
     case texte:
-      sprintf(mess, "MSG %i %s",tr.taille, tr.message);
+      sprintf(message, "MSG %s", tr.message);
       break;
 
     case fileProposition:
-      sprintf(mess, "File_P %i %s",tr.taille, tr.message); 
+      sprintf(message, "File_P %s", tr.message); 
       break;
   
     case fileAcceptation:
-      sprintf(mess, "File_A %i %s",tr.taille, tr.message); 
+      sprintf(message, "File_A %s", tr.message); 
       break;
   
     case fileTransfert:
-      sprintf(mess, "File_T %i %s",tr.taille, tr.message); 
+      sprintf(message, "File_T %s", tr.message); 
       break;
   
     case groupJoin:
-      sprintf(mess, "JOIN %i %s",tr.taille, tr.message); 
+      sprintf(message, "JOIN %s", tr.message); 
       break;
   
     case annuaireNew:
-      sprintf(mess, "NEW %i %s",tr.taille, tr.message); 
+      sprintf(message, "NEW %s", tr.message); 
       break;
   
     case annuaireAsk:
-      sprintf(mess, "ASK %i %s",tr.taille, tr.message); 
+      sprintf(message, "ASK %s", tr.message); 
       break;
   
     case annuaireInfo:
-      sprintf(mess, "INFO"); 
+      sprintf(message, "INFO"); 
       break;
     
     default:
       break;
   }
 
-  
+ return EXIT_SUCCESS;
 
-  return mess;
 }
 
-char * Recup_message(char * mot, char * mess, char * taille){
- 
-char * pointeur=NULL;
-char * buffer=calloc(sizeof(int), TAILLE_MAX_MESSAGE);
+int PresentationA(char * message, trame tr){ //à définir
 
-  pointeur=strstr(mess, mot);
-  if (pointeur!=NULL){
-    while(*pointeur != ' '){
-      pointeur++;
-    }
-    pointeur++;
-    while(*pointeur != ' '){
-      sprintf(taille,"%s%c", taille, *pointeur);
-      pointeur++;
-    }
-    pointeur++;
-    while (*pointeur != '\0'){
-      sprintf(buffer,"%s%c", buffer, *pointeur);
-      pointeur++;
-    }
+  return EXIT_SUCCESS;
+}
+
+int SessionA(char * message){ //Rajoute la taille des données dans le message
+  
+  int taille=sizeof(message);
+  char mess[TAILLE_MAX_MESSAGE];
+
+  strcpy(mess,message);
+
+  sprintf(message, "%i %s", taille, mess);
+ 
+  return EXIT_SUCCESS;
+
+} 
+
+
+int str_to_tr(char * message, trame * tr){
+
+  if (SessionR(message)==EXIT_SUCCESS){ //On continue de transposer en trame si le message est reçu en totalité
+    PresentationR(message,tr);
+    ApplicationR(message, tr);
   }
   else{
-    exit(EXIT_FAILURE);
+    printf("Attention tous les paquets émis n'ont pas été reçu... Message à renvoyer\n");
+    return EXIT_FAILURE;
   }
-  return buffer;
+
+  return EXIT_SUCCESS;
 }
 
+int SessionR(char * message){ //Vérifie la taille indiquée et la taille reçue
+ 
+   int taille;
+   char mess[TAILLE_MAX_MESSAGE];
+   sscanf(message, "%i %[^\n]", &taille, mess);
 
-int str_to_tr(char * mess, trame * tr){
+   strcpy(message,mess);
 
-char * taille = calloc(sizeof(char), 8);
+   if (taille==sizeof(message)){
+     return EXIT_SUCCESS;
+   }
+   else{
+     return EXIT_FAILURE;
+  }
 
+}
 
-  if(strncmp("HELLO", mess, 4)==0){
+int PresentationR(char * message, trame * tr){ //A définir
+   
+  return EXIT_SUCCESS; 
+
+}
+
+int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr.type_message
+
+  char mot[6];
+  char message_texte[TAILLE_MAX_MESSAGE];
+
+  sscanf(message, "%s %[^\n]", mot, message_texte);
+  
+  strcpy(tr->message,message_texte);
+  
+  if(strncmp("HELLO", mot, 4)==0){
     tr->type_message=hello;
-    strcpy(tr->message, Recup_message("HELLO", mess, taille));
   }
-  else if(strncmp("QUIT", mess, 4)==0){
+  else if(strncmp("QUIT", mot, 4)==0){
     tr->type_message=quit;
-    strcpy(tr->message, Recup_message("QUIT", mess, taille));
   }
-  else if (strncmp("MSG", mess, 3)==0){
+  else if (strncmp("MSG", mot, 3)==0){
     tr->type_message=texte;
-    strcpy(tr->message, Recup_message("MSG", mess, taille));
   }
-  else if (strncmp("File_P", mess, 6)==0){
+  else if (strncmp("File_P", mot, 6)==0){
     tr->type_message=fileProposition;
-    strcpy(tr->message, Recup_message("File_P", mess, taille));
   }
-  else if (strncmp("File_A", mess, 6)==0){
+  else if (strncmp("File_A", mot, 6)==0){
     tr->type_message=fileAcceptation;
-    strcpy(tr->message, Recup_message("File_A", mess, taille));
   }
-  else if (strncmp("File_T", mess, 6)==0){
+  else if (strncmp("File_T", mot, 6)==0){
     tr->type_message=fileTransfert;
-    strcpy(tr->message, Recup_message("File_T", mess, taille));
   }
-  else if (strncmp("JOIN", mess, 4)==0){
+  else if (strncmp("JOIN", mot, 4)==0){
     tr->type_message=groupJoin;
-    strcpy(tr->message, Recup_message("JOIN", mess, taille));
   }
-  else if(strncmp("NEW", mess, 3)==0){
+  else if(strncmp("NEW", mot, 3)==0){
     tr->type_message=annuaireNew;
-    strcpy(tr->message, Recup_message("NEW", mess, taille));
   }
-  else if(strncmp("ASK", mess, 3)==0){
+  else if(strncmp("ASK", mot, 3)==0){
     tr->type_message=annuaireAsk;
-    strcpy(tr->message,Recup_message("ASK", mess, taille));
   }
-  else if(strncmp("INFO", mess, 4)==0){
+  else if(strncmp("INFO", mot, 4)==0){
     tr->type_message=annuaireInfo;
-    strcpy(tr->message, Recup_message("INFO", mess, taille));
   }
-  
-  tr->taille=atoi(taille);
-  
-  if (sizeof(tr->message)==tr->taille){
-	return EXIT_SUCCESS;	
-  }
-
-  return EXIT_FAILURE;
+ 
+  return EXIT_SUCCESS;
 
 }
