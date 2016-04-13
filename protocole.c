@@ -72,10 +72,10 @@ int PresentationA(char * message, trame tr){ //à définir
 
 int SessionA(char * message){ //Rajoute la taille des données dans le message
   
-  int taille=sizeof(message);
+  int taille=strlen(message);
   char mess[TAILLE_MAX_MESSAGE];
 
-  strcpy(mess,message);
+  sprintf(mess,"%s",message);
 
   sprintf(message, "%i %s", taille, mess);
  
@@ -100,13 +100,12 @@ int str_to_tr(char * message, trame * tr){
 
 int SessionR(char * message){ //Vérifie la taille indiquée et la taille reçue
  
-   int taille;
-   char mess[TAILLE_MAX_MESSAGE];
-   sscanf(message, "%i %[^\n]", &taille, mess);
+   char taille[6];
+   sscanf(message, "%s", taille);
 
-   strcpy(message,mess);
+   sprintf(message,"%s",message+strlen(taille)+1);
 
-   if (taille==sizeof(message)){
+   if (atoi(taille)==sizeof(message)){
      return EXIT_SUCCESS;
    }
    else{
@@ -124,11 +123,10 @@ int PresentationR(char * message, trame * tr){ //A définir
 int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr.type_message
 
   char mot[6];
-  char message_texte[TAILLE_MAX_MESSAGE];
 
-  sscanf(message, "%s %[^\n]", mot, message_texte);
+  sscanf(message, "%s", mot);
   
-  strcpy(tr->message,message_texte);
+  sprintf(tr->message,"%s",message+strlen(mot)+1);
   
   if(strncmp("HELLO", mot, 4)==0){
     tr->type_message=hello;
