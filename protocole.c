@@ -4,13 +4,13 @@
 #include<string.h>
 
 
-int tr_to_str(char * message, trame tr){ 
+int tr_to_str(char * message, trame tr){ //retourne la longueur final de message pour avoir la taille à envoyer dans write
  
   ApplicationA(message, tr);
   PresentationA(message, tr);
   SessionA(message);
 
-  return EXIT_SUCCESS;
+  return strlen(message);
 
 }
 
