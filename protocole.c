@@ -105,7 +105,7 @@ int SessionR(char * message){ //Vérifie la taille indiquée et la taille reçue
 
    sprintf(message,"%s",message+strlen(taille)+1);
 
-   if (atoi(taille)==sizeof(message)){
+   if (atoi(taille)==strlen(message)){
      return EXIT_SUCCESS;
    }
    else{
