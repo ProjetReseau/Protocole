@@ -156,7 +156,7 @@ int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr
     tr->type_message=annuaireInfo;
   }
  
-  if (strlen(message)==tr->taille){
+  if (sizeof(message)==tr->taille){
     return EXIT_SUCCESS;
   }
   else{
