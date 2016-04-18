@@ -8,7 +8,7 @@ int tr_to_str(char * message, trame tr){ //retourne la longueur final de message
  
   ApplicationA(message, tr);
   PresentationA(message, tr);
-  SessionA(message);
+  SessionA(message, tr);
 
   return strlen(message);
 
@@ -70,14 +70,13 @@ int PresentationA(char * message, trame tr){ //à définir
   return EXIT_SUCCESS;
 }
 
-int SessionA(char * message){ //Rajoute la taille des données dans le message
+int SessionA(char * message, trame tr){ //Rajoute la taille des données dans le message
   
-  int taille=sizeof(message);
-  char mess[TAILLE_MAX_MESSAGE];
+  char mess[TAILLE_MAX_MESSAGE+32];
 
-  strcpy(mess,message);
+  sprintf(mess,"%s",message);
 
-  sprintf(message, "%i %s", taille, mess);
+  sprintf(message, "%i %s", tr.taille, mess);
  
   return EXIT_SUCCESS;
 
@@ -86,9 +85,9 @@ int SessionA(char * message){ //Rajoute la taille des données dans le message
 
 int str_to_tr(char * message, trame * tr){
 
-  if (SessionR(message)==EXIT_SUCCESS){ //On continue de transposer en trame si le message est reçu en totalité
-    PresentationR(message,tr);
-    ApplicationR(message, tr);
+  SessionR(message, tr);
+  PresentationR(message,tr);
+  if (ApplicationR(message, tr)==EXIT_FAILURE){
   }
   else{
     printf("Attention tous les paquets émis n'ont pas été reçu... Message à renvoyer\n");
@@ -98,21 +97,18 @@ int str_to_tr(char * message, trame * tr){
   return EXIT_SUCCESS;
 }
 
-int SessionR(char * message){ //Vérifie la taille indiquée et la taille reçue
+int SessionR(char * message, trame * tr){ //Remplit le champ tr.taille
  
-   int taille;
-   char mess[TAILLE_MAX_MESSAGE];
-   sscanf(message, "%i %[^\n]", &taille, mess);
-
-   strcpy(message,mess);
-
-   if (taille==sizeof(message)){
-     return EXIT_SUCCESS;
-   }
-   else{
-     return EXIT_FAILURE;
-  }
-
+   char taille[6];
+   char tmp[TAILLE_MAX_MESSAGE+32];
+   
+   sscanf(message, "%s", taille);
+   tr->taille=atoi(taille);
+   
+   sprintf(tmp, "%s", message+strlen(taille)+1);
+   sprintf(message, "%s", tmp);
+  
+   return EXIT_SUCCESS;
 }
 
 int PresentationR(char * message, trame * tr){ //A définir
@@ -124,12 +120,11 @@ int PresentationR(char * message, trame * tr){ //A définir
 int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr.type_message
 
   char mot[6];
-  char message_texte[TAILLE_MAX_MESSAGE];
 
-  sscanf(message, "%s %[^\n]", mot, message_texte);
+  sscanf(message, "%s", mot);
   
-  strcpy(tr->message,message_texte);
-  
+  sprintf(tr->message,"%s",message+strlen(mot)+1);
+
   if(strncmp("HELLO", mot, 4)==0){
     tr->type_message=hello;
   }
@@ -161,6 +156,10 @@ int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr
     tr->type_message=annuaireInfo;
   }
  
-  return EXIT_SUCCESS;
-
+  if (strlen(message)==tr->taille){
+    return EXIT_SUCCESS;
+  }
+  else{
+    return EXIT_FAILURE;
+  }
 }
