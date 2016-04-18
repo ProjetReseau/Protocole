@@ -38,10 +38,10 @@ int tr_to_str(char * message, trame tr);
 
 int ApplicationA(char * message, trame tr);
 int PresentationA(char * message, trame tr);
-int SessionA(char * message);
+int SessionA(char * message, trame tr);
 
 int ApplicationR(char * message, trame * tr);
 int PresentationR(char * message, trame * tr);
-int SessionR(char * message);
+int SessionR(char * message, trame * tr);
 
 #endif
