@@ -27,7 +27,7 @@ typedef enum type {
 typedef struct trame {
 
   int taille; // Taille du message en octet
-  type type_message; //Message texte ? Fichier ? Audio ? Video ?  
+  type type_message; //Message texte ? Fichier ? Audio ? Video ?
   //char pseudo_destination[TAILLE_PSEUDO][MAX_CONNECTE];
   char message[TAILLE_MAX_MESSAGE];
 
@@ -39,6 +39,8 @@ int tr_to_str(char * message, trame tr);
 int ApplicationA(char * message, trame tr);
 int PresentationA(char * message, trame tr);
 int SessionA(char * message, trame tr);
+
+int FileProtocole(char * message, trame tr);
 
 int ApplicationR(char * message, trame * tr);
 int PresentationR(char * message, trame * tr);
