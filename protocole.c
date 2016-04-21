@@ -15,6 +15,7 @@ int tr_to_str(char * message, trame tr){ //retourne la longueur final de message
     SessionA(message, tr);
   }
 
+//  printf("message envoyé : %s\n", message);
   return strlen(message);
 
 }
@@ -24,7 +25,7 @@ int FileProtocole(char * message, trame tr){
   sprintf(message, "%i File_T ", tr.taille);
   char taille[6];
   sscanf(message, "%s", taille);
-  char * ptr_dest=message+strlen(taille)+strlen("File_T")+1;
+  char * ptr_dest=message+strlen(taille)+strlen("File_T")+2;
   char * ptr_src=tr.message;
   memcpy(ptr_dest,ptr_src,TAILLE_MAX_MESSAGE);
 
@@ -100,12 +101,18 @@ int SessionA(char * message, trame tr){ //Rajoute la taille des données dans le
 
 int str_to_tr(char * message, trame * tr){
 
+
   char mot[6];
-  char taille[6];
+  char taille[10];
   sscanf(message, "%s %s", taille, mot);
+  char * ptr_src=message+strlen(taille)+strlen("File_T")+2;
 
   if (strncmp("File_T", mot, 6)==0){
-    memcpy(tr->message, message, TAILLE_MAX_MESSAGE);
+    tr->type_message=fileTransfert;
+    tr->taille=atoi(taille);	
+    memcpy(tr->message, ptr_src, TAILLE_MAX_MESSAGE);
+
+    printf("message reçu : %s\n", message);
   }
   else{
     SessionR(message, tr);
