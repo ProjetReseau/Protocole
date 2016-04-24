@@ -14,8 +14,7 @@ int tr_to_str(char * message, trame tr){ //retourne la longueur final de message
     PresentationA(message, tr);
     SessionA(message, tr);
   }
-
-//  printf("message envoyé : %s\n", message);
+  //printf("Message envoyé : %s\n", message);
   return strlen(message);
 
 }
@@ -72,7 +71,7 @@ int ApplicationA(char * message, trame tr){
       break;
 
     case annuaireInfo:
-      sprintf(message, "INFO");
+      sprintf(message, "INFO %s", tr.message);
       break;
 
     default:
@@ -100,19 +99,15 @@ int SessionA(char * message, trame tr){ //Rajoute la taille des données dans le
 
 
 int str_to_tr(char * message, trame * tr){
-
-
+  //printf("Message reçu : %s\n", message);
   char mot[6];
-  char taille[10];
+  char taille[6];
   sscanf(message, "%s %s", taille, mot);
   char * ptr_src=message+strlen(taille)+strlen("File_T")+2;
-
   if (strncmp("File_T", mot, 6)==0){
     tr->type_message=fileTransfert;
-    tr->taille=atoi(taille);	
+    tr->taille=atoi(taille);
     memcpy(tr->message, ptr_src, TAILLE_MAX_MESSAGE);
-
-    printf("message reçu : %s\n", message);
   }
   else{
     SessionR(message, tr);
@@ -150,7 +145,7 @@ int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr
   char mot[6];
 
   sscanf(message, "%s", mot);
-
+  //printf("message :ici->%s<-ici\n", message);
   sprintf(tr->message,"%s",message+strlen(mot)+1);
 
   if(strncmp("HELLO", mot, 4)==0){
@@ -184,10 +179,23 @@ int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr
     tr->type_message=annuaireInfo;
   }
 
-  if (strlen(tr->message)==tr->taille){
-    return EXIT_SUCCESS;
+  //printf("Egalité des tailles indiquée et reçu : %i - %i\n", tr->taille, (int)strlen(tr->message));
+  //printf("tr->message :ici->%s<-ici\n", tr->message);
+  //printf("Type : %i", tr->type_message);
+
+  if (tr->type_message==quit){
+    //printf("Egalité des tailles indiquée et reçu : %i - 0\n", tr->taille);
+    if (tr->taille==0){
+      return EXIT_SUCCESS;
+    }
+    else{
+      return EXIT_FAILURE;
+    }
   }
+  else if ((int)strlen(tr->message)==tr->taille){
+      return EXIT_SUCCESS;
+    }
   else{
-    return EXIT_FAILURE;
+      return EXIT_FAILURE;
   }
 }
