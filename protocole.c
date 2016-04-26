@@ -91,8 +91,12 @@ int SessionA(char * message, trame tr){ //Rajoute la taille des données dans le
 
   char mess[TAILLE_MAX_MESSAGE+32];
   sprintf(mess,"%s",message);
-  sprintf(message, "%i %s", tr.taille, mess);
-
+  if (tr.type_message==quit){
+    sprintf(message, "0 %s", mess);
+  }
+  else {
+    sprintf(message, "%i %s", tr.taille, mess);
+  }
   return EXIT_SUCCESS;
 
 }
@@ -109,6 +113,7 @@ int str_to_tr(char * message, trame * tr){
     tr->taille=atoi(taille);
     memcpy(tr->message, ptr_src, TAILLE_MAX_MESSAGE);
   }
+
   else{
     SessionR(message, tr);
     PresentationR(message,tr);
@@ -119,6 +124,7 @@ int str_to_tr(char * message, trame * tr){
   }
   return EXIT_SUCCESS;
 }
+
 
 int SessionR(char * message, trame * tr){ //Remplit le champ tr.taille
 
@@ -179,12 +185,7 @@ int ApplicationR(char * message, trame * tr){//Remplit le champ tr.message et tr
     tr->type_message=annuaireInfo;
   }
 
-  //printf("Egalité des tailles indiquée et reçu : %i - %i\n", tr->taille, (int)strlen(tr->message));
-  //printf("tr->message :ici->%s<-ici\n", tr->message);
-  //printf("Type : %i", tr->type_message);
-
   if (tr->type_message==quit){
-    //printf("Egalité des tailles indiquée et reçu : %i - 0\n", tr->taille);
     if (tr->taille==0){
       return EXIT_SUCCESS;
     }
